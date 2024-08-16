@@ -14,7 +14,7 @@ GuestVo guestVo = (GuestVo) request.getAttribute("guestVo");
 <title>Insert title here</title>
 </head>
 <body>
-	<form action="/guestbook/gbc" method="post">
+	<form action="/guestbook/gbc" method="get">
 		<table>
 			<tr>
 				<td>비밀번호</td>
