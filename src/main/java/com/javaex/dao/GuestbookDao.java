@@ -69,26 +69,29 @@ public class GuestbookDao {
 
 	}
 	//삭제하기
-	public int deleteGuest(GuestVo guestVo) {
-		int count =-1;
+	public boolean deleteGuest(int no, String inputPassword) {
+	    boolean isDeleted = false;
 		
 		this.getConnection();
 		try {
 			String query = "";
-			query += " delete from guestbook ";
+			query += " DELETE FROM guestbook ";
 			query += " where no = ? ";
+			query += " AND password = ? ";
 			
 			pstmt = conn.prepareStatement(query);
-			pstmt.setInt(1, guestVo.getNo());
-			
-			count = pstmt.executeUpdate();
+			pstmt.setInt(1, no);
+			pstmt.setString(2, inputPassword); 
+			 
+			int delete = pstmt.executeUpdate();
+		    isDeleted = delete > 0;  // 삭제된 행이 있으면 성공
 			
 			
 		} catch (SQLException e) {
 			System.out.println("error:" + e);
 		}
 		this.close();
-		return count;
+		return isDeleted;
 	}
 	
 	

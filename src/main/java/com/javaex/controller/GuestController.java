@@ -40,51 +40,53 @@ public class GuestController extends HttpServlet {
 			RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/addList.jsp");
 			rd.forward(request, response);
 
-		}else if("insert".equals(action)) {
-			
+		} else if ("insert".equals(action)) {
+
 			System.out.println("등록 요청 데이터3개 저장해줘");
-			
+
 			String name = request.getParameter("name");
 			String password = request.getParameter("password");
 			String content = request.getParameter("content");
-			
-			
-			GuestVo guestVo = new GuestVo(name,password,content);
-			
+
+			GuestVo guestVo = new GuestVo(name, password, content);
+
 			GuestbookDao guestbookDao = new GuestbookDao();
-			
+
 			guestbookDao.insertGuest(guestVo);
-			
+
 			response.sendRedirect("/guestbook/gbc?action=list");
-			
-		}else if("deleteform".equals(action)) {
-			
+
+		} else if ("deleteform".equals(action)) {
+
 			System.out.println("삭제폼 요청");
-			
+
 			int no = Integer.parseInt(request.getParameter("no"));
-			
+
 			GuestbookDao guestbookDao = new GuestbookDao();
 			GuestVo guestVo = guestbookDao.getGuestOne(no);
-			
+
 			request.setAttribute("guestVo", guestVo);
 			RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/deleteForm.jsp");
 			rd.forward(request, response);
-		
-		}else if("delete".equals(action)) {
+
+		} else if ("delete".equals(action)) {
 			System.out.println("삭제 요청");
-			int no = Integer.parseInt(request.getParameter("no")) ;
-		
-			GuestVo guestVo = new GuestVo(no);
+			String inputPassword = request.getParameter("password");
+			int no = Integer.parseInt(request.getParameter("no"));
+
 			GuestbookDao guestbookDao = new GuestbookDao();
-			
-			guestbookDao.deleteGuest(guestVo);
-			
-			response.sendRedirect("/guestbook/gbc?action=list");
-		
+			boolean isDeleted = guestbookDao.deleteGuest(no, inputPassword);
+
+			if (isDeleted) {
+				// 삭제 성공 시
+				response.sendRedirect("/guestbook/gbc?action=list");
+			} else {
+				System.out.println("비밀번호가 일치하지 않습니다.");
+				RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/errer.jsp");
+				rd.forward(request, response);
+			}
+
 		}
-		
-		
-		
 
 	}
 

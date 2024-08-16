@@ -18,7 +18,13 @@ public class GuestVo {
 	public GuestVo(int no) {
 		super();
 		this.no = no;
-	
+
+	}
+
+	public GuestVo(int no, String password) {
+		super();
+		this.no = no;
+		this.password = password;
 	}
 
 	public GuestVo(String name, String password, String content) {
